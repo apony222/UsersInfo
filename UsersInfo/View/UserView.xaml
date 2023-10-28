@@ -6,9 +6,25 @@
              xmlns:local="clr-namespace:UsersInfo.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="WhiteSmoke">
-    <DockPanel LastChildFill="False">
-        
+             Background="WhiteSmoke"
+             FontSize="14"
+             FontWeight="DemiBold">
+    <DockPanel LastChildFill="True" Name="UserViewDPanel">
+        <StackPanel DockPanel.Dock="Top" Background="LightGray" Height="50" Orientation="Horizontal">
+            <Button Margin="5" Content="Add" Height="40" Width="130"/>
+            <Button Margin="5" Content="Update" Height="40" Width="130"/>
+            <Button Margin="5" Content="Delete" Height="40" Width="130"/>
+            <Button Margin="5" Content="Button" Height="40" Width="130"/>
+        </StackPanel>
+        <DataGrid HorizontalContentAlignment="Center">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Width=".1*"/>
+                <DataGridTextColumn Header="FullName" Width=".3*"/>
+                <DataGridTextColumn Header="E-Mail" Width=".3*"/>
+                <DataGridTextColumn Header="PhoneNumber" Width=".3*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </DockPanel>
 
 

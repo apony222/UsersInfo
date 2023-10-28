@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UsersInfo.View;
 
 namespace UsersInfo
 {
@@ -23,6 +24,7 @@ namespace UsersInfo
         public MainWindow()
         {
             InitializeComponent();
+            DockMain.Children.Add(new View.UserView());
         }
     }
 }
