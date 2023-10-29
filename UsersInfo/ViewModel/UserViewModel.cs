@@ -1,45 +1,61 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using UsersInfo.Core;
+using UsersInfo.Data;
+using UsersInfo.Data.SqlOperations;
 
 namespace UsersInfo.ViewModel
 {
-    public class UserViewModel : INotifyPropertyChanged
+    class UserViewModel : INotifyPropertyChanged
     {
-        #region Fields
+        private readonly IDataHelper<User> UserDataHelper;
         private User user;
         private User selectedUser;
         private ObservableCollection<User> users;
-        #endregion
-
-       
-        public UserViewModel() 
+        public UserViewModel()
         {
-         user = new User();
-         users = new ObservableCollection<User>();
+            user = new User();
+            users = new ObservableCollection<User>();
+            UserDataHelper = new UserEntity();
+            LoadData();
         }
 
-
-        #region Properties
-        public string FullName 
+        private async void LoadData()
         {
-            get
-            { 
-            return user.FullName;
-            }
-
-            set 
+           users.Clear();
+           
+            foreach(User user in await UserDataHelper.getAllAsync())
             {
-                if(user.FullName!=value)
-                { 
+                users.Add(user);
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+       
+      protected virtual void OnPropertyChanged(string PropertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+        public string FullName  
+        {
+            get 
+            {
+             return user.FullName;
+            }
+            set 
+            { 
+            if(user.FullName!=value)
+                {
                     user.FullName = value;
-                    OnPropertyChanged(nameof(FullName));
+                    OnPropertyChanged(nameof(user.FullName));
                 }
             }
         }
@@ -52,74 +68,62 @@ namespace UsersInfo.ViewModel
             }
             set
             {
-                if(user.Email!=value)
+                if (user.Email != value)
                 {
                     user.Email = value;
-                    OnPropertyChanged(nameof(Email));
+                    OnPropertyChanged(nameof(user.Email));
                 }
-            } 
+            }
         }
 
-        public string PhoneNumber 
+        public string PhoneNumber
         {
-            get 
+            get
             {
-            return (string)user.PhoneNumber;
+                return user.PhoneNumber;
             }
-
             set
             {
-                if(user.PhoneNumber!=value) 
+                if (user.PhoneNumber != value)
                 {
-                    if(user.PhoneNumber!=value)
-                    {
-                        user.PhoneNumber = value;
-                        OnPropertyChanged(nameof(PhoneNumber));
-                    }
+                    user.PhoneNumber = value;
+                    OnPropertyChanged(nameof(user.PhoneNumber));
                 }
             }
         }
-        #endregion
 
 
-        public User SelectedUser 
+        public User SelectedUser
         {
-            get 
+            get
             {
                 return selectedUser;
             }
-            set 
+            set
             {
                 if (selectedUser != value)
                 {
-                    selectedUser=value;
-                    OnPropertyChanged(nameof(SelectedUser));
+                    selectedUser = value;
+                    OnPropertyChanged(nameof(selectedUser));
                 }
-            } 
+            }
         }
 
         public ObservableCollection<User> Users
         {
-            get 
+            get
             {
-                return users; 
+                return users;
             }
-            set 
+            set
             {
-                if (users!=value)
+                if (users != value)
                 {
                     users = value;
-                    OnPropertyChanged(nameof(Users));
+                    OnPropertyChanged(nameof(users));
                 }
             }
         }
 
-
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -20,9 +20,12 @@ namespace UsersInfo.View
     /// </summary>
     public partial class UserView : UserControl
     {
+        private ViewModel.UserViewModel userView;
         public UserView()
         {
             InitializeComponent();
+            userView = new ViewModel.UserViewModel();
+            this.DataContext= userView;
         }
     }
 }
